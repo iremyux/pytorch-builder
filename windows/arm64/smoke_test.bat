@@ -1,3 +1,6 @@
+@echo off
+setlocal
+
 set "ORIG_PATH=%PATH%"
 
 if "%PACKAGE_TYPE%" == "wheel" goto wheel
@@ -9,10 +12,14 @@ exit /b 1
 :wheel
 echo "install wheel package"
 
+echo Running bootstrap_python.bat...
 %BUILDER_ROOT%\windows\arm64\bootstrap_python.bat
+echo Error level after bootstrap_python.bat: %ERRORLEVEL%
 if errorlevel 1 exit /b 1
 
+echo Running pip install...
 pip install -q --pre numpy protobuf
+echo Error level after pip install: %ERRORLEVEL%
 if errorlevel 1 exit /b 1
 
 for /F "delims=" %%i in ('where /R "%PYTORCH_FINAL_PACKAGE_DIR:/=\%" *.whl') do pip install "%%i"
@@ -24,19 +31,19 @@ goto smoke_test
 python -c "import torch"
 if ERRORLEVEL 1 exit /b 1
 
-echo Checking that basic RNN works
+echo Running python rnn_smoke.py...
 python %BUILDER_ROOT%\test_example_code\rnn_smoke.py
-if ERRORLEVEL 1 exit /b 1
+if errorlevel 1 exit /b 1
 
-echo Checking that basic CNN works
+echo Checking that basic CNN works...
 python %BUILDER_ROOT%\test_example_code\cnn_smoke.py
-if ERRORLEVEL 1 exit /b 1
+if errorlevel 1 exit /b 1
 
 goto end
 
 :libtorch
 echo "install and test libtorch"
- 
+
 %BUILDER_ROOT%\windows\arm64\bootstrap_buildtools.bat
 if ERRORLEVEL 1 exit /b 1
 

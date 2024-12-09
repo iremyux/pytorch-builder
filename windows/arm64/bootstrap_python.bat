@@ -30,7 +30,7 @@ echo Installing Python...
 
 :: Check if installation was successful
 if %errorlevel% neq 0 (
-    echo "Failed to install Git. (exitcode = %errorlevel%)"
+    echo "Failed to install Python. (exitcode = %errorlevel%)"
     exit /b 1
 )
 

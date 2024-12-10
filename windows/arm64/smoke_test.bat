@@ -12,11 +12,6 @@ exit /b 1
 :wheel
 echo "install wheel package"
 
-echo Running bootstrap_python.bat...
-CALL %BUILDER_ROOT%\windows\arm64\bootstrap_python.bat
-echo Error level after bootstrap_python.bat: %ERRORLEVEL%
-if errorlevel 1 exit /b 1
-
 echo Running pip install...
 pip install -q --pre numpy protobuf
 echo Error level after pip install: %ERRORLEVEL%
@@ -43,9 +38,6 @@ goto end
 
 :libtorch
 echo "install and test libtorch"
-
-CALL %BUILDER_ROOT%\windows\arm64\bootstrap_buildtools.bat
-if ERRORLEVEL 1 exit /b 1
 
 for /F "delims=" %%i in ('where /R "%PYTORCH_FINAL_PACKAGE_DIR:/=\%" *-latest.zip') do 7z x "%%i" -otmp
 if ERRORLEVEL 1 exit /b 1

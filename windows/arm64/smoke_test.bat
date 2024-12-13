@@ -27,11 +27,11 @@ python -c "import torch"
 if ERRORLEVEL 1 exit /b 1
 
 echo Running python rnn_smoke.py...
-python %BUILDER_ROOT%\test_example_code\rnn_smoke.py
+python %BUILDER_ROOT%\test_example_code\rnn_smoke_win_arm64.py
 if errorlevel 1 exit /b 1
 
 echo Checking that basic CNN works...
-python %BUILDER_ROOT%\test_example_code\cnn_smoke.py
+python %BUILDER_ROOT%\test_example_code\cnn_smoke_win_arm64.py
 if errorlevel 1 exit /b 1
 
 goto end

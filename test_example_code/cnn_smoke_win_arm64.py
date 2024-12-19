@@ -19,17 +19,22 @@ class SimpleCNN(nn.Module):
         output = output.view(1)
         return output
 
-# Mock one infer
-net = SimpleCNN()
-net_inputs = torch.rand((1, 1, 5, 5))
-outputs = net(net_inputs)
-print(outputs)
+try:
+    # Mock one infer
+    net = SimpleCNN()
+    net_inputs = torch.rand((1, 1, 5, 5))
+    outputs = net(net_inputs)
+    print(outputs)
+ 
+    criterion = nn.MSELoss()
+    optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.1)
+ 
+    # Mock one step training
+    label = torch.full((1,), 1.0, dtype=torch.float)
+    loss = criterion(outputs, label)
+    loss.backward()
+    optimizer.step()
+ 
+except Exception as e:
+    print(f"An error occurred: {e}")
 
-criterion = nn.MSELoss()
-optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.1)
-
-# Mock one step training
-label = torch.full((1,), 1.0, dtype=torch.float)
-loss = criterion(outputs, label)
-loss.backward()
-optimizer.step()

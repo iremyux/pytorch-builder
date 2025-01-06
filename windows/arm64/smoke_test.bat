@@ -14,6 +14,7 @@ echo "install wheel package"
 
 echo Running pip install...
 pip install -q --pre numpy protobuf
+pip install --no-binary optree optree
 echo Error level after pip install: %ERRORLEVEL%
 if errorlevel 1 exit /b 1
 
